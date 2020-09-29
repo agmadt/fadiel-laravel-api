@@ -63,6 +63,7 @@ class OrderController extends Controller
         foreach ($request->products as $item) {
             $imagesArr = [];
             $variantsArr = [];
+            $categoriesArr = [];
             $product = Product::find($item['id']);
 
             if (!$product) {
@@ -101,14 +102,29 @@ class OrderController extends Controller
                 }
             }
 
+            if ($product->categories) {
+                foreach ($product->categories as $category) {
+
+                    if (empty($category->category)) {
+                        continue;
+                    }
+
+                    $categoriesArr[] = [
+                        'name' => $category->category->name
+                    ];
+                }
+            }
+
             $productsArr[] = [
                 'id' => $product->id,
                 'name' => $product->name,
                 'price' => $product->price,
+                'description' => $product->description,
                 'quantity' => $item['quantity'],
                 'subtotal' => $product->price * $item['quantity'],
                 'images' => $imagesArr,
-                'variants' => $variantsArr
+                'variants' => $variantsArr,
+                'categories' => $categoriesArr
             ];
 
             $total += $product->price * $item['quantity'];

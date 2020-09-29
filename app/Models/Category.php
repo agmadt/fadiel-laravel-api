@@ -2,18 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class ProductCategory extends Model
+class Category extends Model
 {
     use HasFactory;
 
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['category_id'];
-    public $timestamps = false;
+    protected $fillable = ['name'];
 
     public static function boot()
     {
@@ -21,11 +19,5 @@ class ProductCategory extends Model
         self::creating(function ($model) {
             $model->id = Str::uuid();
         });
-    }
-
-    /** Relationships **/
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id');
     }
 }
