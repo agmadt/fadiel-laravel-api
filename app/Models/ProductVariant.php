@@ -20,4 +20,10 @@ class ProductVariant extends Model
             $model->id = Str::uuid();
         });
     }
+
+    /** Relationships **/
+    public function options()
+    {
+        return $this->hasMany(ProductVariantOption::class);
+    }
 }

@@ -30,4 +30,47 @@ class ProductController extends Controller
             'total' => $products->total()
         ]);
     }
+
+    public function show(Product $product)
+    {
+        $imagesArr = [];
+        $variantsArr = [];
+
+        if ($product->images) {
+            foreach ($product->images as $productImage) {
+                $imagesArr[] = [
+                    'image' => $productImage->image
+                ];
+            }
+        }
+
+        if ($product->variants) {
+            foreach ($product->variants as $productVariant) {
+                $variantOptions = [];
+
+                if ($productVariant->options) {
+                    foreach ($productVariant->options as $productOption) {
+                        $variantOptions[] = [
+                            'id' => $productOption->id,
+                            'name' => $productOption->name
+                        ];
+                    }
+                }
+
+                $variantsArr[] = [
+                    'id' => $productVariant->id,
+                    'name' => $productVariant->name,
+                    'options' => $variantOptions
+                ];
+            }
+        }
+
+        return response()->json([
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => $product->price,
+            'images' => $imagesArr,
+            'variants' => $variantsArr
+        ]);
+    }
 }
