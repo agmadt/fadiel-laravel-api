@@ -32,4 +32,24 @@ class OrderController extends Controller
             'total' => $orders->total()
         ]);
     }
+
+    public function show(Order $order)
+    {
+        $products = [];
+
+        foreach ($order->products as $item) {
+            $product = $item->productJSON;
+            $products[] = $product;
+        }
+
+        return response()->json([
+            'id' => $order->id,
+            'buyer_name' => $order->buyer_name,
+            'buyer_email' => $order->buyer_email,
+            'total' => $order->total,
+            'message' => $order->message,
+            'created_at' => $order->created_at->timestamp,
+            'products' => $products
+        ]);
+    }
 }

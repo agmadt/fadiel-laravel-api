@@ -22,9 +22,9 @@ class Order extends Model
         });
     }
 
-    /** Accessor **/
-    public function getCreatedAtTimestampAttribute()
+    /** Relationships **/
+    public function products()
     {
-        return $this->created_at;
+        return $this->hasMany(OrderProduct::class);
     }
 }
