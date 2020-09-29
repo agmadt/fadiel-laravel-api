@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
@@ -18,8 +19,13 @@ class Order extends Model
     {
         parent::boot();
         self::creating(function ($model) {
-            $model->id = (string) Uuid::generate(4);
+            $model->id = Str::uuid();
         });
+    }
+
+    public function setUpdatedAtAttribute($value)
+    {
+        // to Disable updated_at
     }
 
     /** Relationships **/
