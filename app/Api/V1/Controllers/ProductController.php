@@ -3,7 +3,10 @@
 namespace App\Api\V1\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Api\V1\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
@@ -71,6 +74,56 @@ class ProductController extends Controller
             'price' => $product->price,
             'images' => $imagesArr,
             'variants' => $variantsArr
+        ]);
+    }
+
+    public function store(StoreProductRequest $request)
+    {
+        DB::beginTransaction();
+
+        $product = Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+        ]);
+
+        if ($request->images) {
+            foreach ($request->images as $itemImage) {
+                $product->images()->create([
+                    'image' => $itemImage['image']
+                ]);
+            }
+        }
+
+        if ($request->variants) {
+            foreach ($request->variants as $itemVariant) {
+                $variant = $product->variants()->create([
+                    'name' => $itemVariant['name']
+                ]);
+
+                foreach ($itemVariant['options'] as $itemVariantOption) {
+                    $variant->options()->create([
+                        'name' => $itemVariantOption['name']
+                    ]);
+                }
+            }
+        }
+
+        if ($request->categories) {
+            foreach ($request->categories as $itemCategory) {
+                $variant = $product->categories()->create([
+                    'category_id' => $itemCategory['id']
+                ]);
+            }
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => $product->price,
+            'description' => $product->description,
         ]);
     }
 }

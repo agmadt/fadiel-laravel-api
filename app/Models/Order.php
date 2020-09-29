@@ -10,7 +10,6 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $dates = ['created_at'];
     protected $fillable = ['buyer_name', 'buyer_email', 'total', 'message'];
     public $incrementing = false;
     protected $keyType = 'string';

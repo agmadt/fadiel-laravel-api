@@ -12,6 +12,8 @@ class ProductVariant extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $fillable = ['name'];
+    public $timestamps = false;
 
     public static function boot()
     {

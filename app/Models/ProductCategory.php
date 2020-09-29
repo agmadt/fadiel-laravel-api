@@ -12,6 +12,8 @@ class ProductCategory extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $fillable = ['category_id'];
+    public $timestamps = false;
 
     public static function boot()
     {

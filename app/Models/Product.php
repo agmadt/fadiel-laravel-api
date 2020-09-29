@@ -12,6 +12,7 @@ class Product extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $fillable = ['name', 'price', 'description'];
 
     public static function boot()
     {
@@ -30,5 +31,10 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(ProductVariant::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(ProductCategory::class);
     }
 }

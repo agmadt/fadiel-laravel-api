@@ -12,6 +12,8 @@ class ProductImage extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $fillable = ['image'];
+    public $timestamps = false;
 
     public static function boot()
     {
