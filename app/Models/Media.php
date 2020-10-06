@@ -12,6 +12,7 @@ class Media extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $fillable = ['filename', 'location', 'type'];
 
     public static function boot()
     {
