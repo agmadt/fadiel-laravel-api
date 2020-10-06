@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Api\V1\Controllers\AuthController;
 use App\Api\V1\Controllers\MediaController;
 use App\Api\V1\Controllers\OrderController;
 use App\Api\V1\Controllers\ProductController;
@@ -18,21 +19,22 @@ use App\Api\V1\Controllers\CategoryController;
 |
 */
 
+Route::post('/auth/login', [AuthController::class, 'login']);
+
 Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/categories/{category}', [CategoryController::class, 'show']);
-Route::post('/categories', [CategoryController::class, 'store']);
-Route::patch('/categories/{category}', [CategoryController::class, 'update']);
-Route::delete('/categories/{category}', [CategoryController::class, 'delete']);
+Route::post('/categories', [CategoryController::class, 'store'])->middleware('api.auth');
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->middleware('api.auth');
+Route::patch('/categories/{category}', [CategoryController::class, 'update'])->middleware('api.auth');
+Route::delete('/categories/{category}', [CategoryController::class, 'delete'])->middleware('api.auth');
 
-Route::post('/media', [MediaController::class, 'store']);
+Route::post('/media', [MediaController::class, 'store'])->middleware('api.auth');
 
-Route::get('/orders', [OrderController::class, 'index']);
-Route::get('/orders/{order}', [OrderController::class, 'show']);
+Route::get('/orders', [OrderController::class, 'index'])->middleware('api.auth');
 Route::post('/orders', [OrderController::class, 'store']);
+Route::get('/orders/{order}', [OrderController::class, 'show']);
 
 Route::get('/products', [ProductController::class, 'index']);
+Route::post('/products', [ProductController::class, 'store'])->middleware('api.auth');
 Route::get('/products/{product}', [ProductController::class, 'show']);
-Route::post('/products', [ProductController::class, 'store']);
-Route::patch('/products/{product}', [ProductController::class, 'update']);
-Route::delete('/products/{product}', [ProductController::class, 'delete']);
-Route::delete('/products/{product}', [ProductController::class, 'delete']);
+Route::patch('/products/{product}', [ProductController::class, 'update'])->middleware('api.auth');
+Route::delete('/products/{product}', [ProductController::class, 'delete'])->middleware('api.auth');
