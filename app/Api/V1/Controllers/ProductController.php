@@ -185,4 +185,20 @@ class ProductController extends Controller
             'description' => $product->description,
         ]);
     }
+
+    public function delete(Product $product)
+    {
+        DB::beginTransaction();
+
+        $product->images()->delete();
+        $product->categories()->delete();
+        $this->productVariantsRepository->deleteAllVariantsFromProduct($product);
+        $product->delete();
+
+        DB::commit();
+
+        return response()->json([
+            'message' => 'Product successfully deleted'
+        ]);
+    }
 }
