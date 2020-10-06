@@ -28,4 +28,12 @@ class CategoryController extends Controller
             'total' => $categories->total()
         ]);
     }
+
+    public function show(Category $category)
+    {
+        return response()->json([
+            'id' => $category->id,
+            'name' => $category->name
+        ]);
+    }
 }

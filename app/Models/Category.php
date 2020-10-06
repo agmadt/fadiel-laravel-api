@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\NotFoundApiException;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
@@ -19,5 +20,16 @@ class Category extends Model
         self::creating(function ($model) {
             $model->id = Str::uuid();
         });
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $product = $this->where('id', $value)->first();
+
+        if (!$product) {
+            throw new NotFoundApiException('Category not found');
+        }
+
+        return $product;
     }
 }
