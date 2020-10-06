@@ -49,4 +49,16 @@ class CategoryController extends Controller
             'name' => $category->name
         ]);
     }
+
+    public function update(StoreCategoryRequest $request, Category $category)
+    {
+        $category->update([
+            'name' => $request->name
+        ]);
+
+        return response()->json([
+            'id' => $category->id,
+            'name' => $category->name
+        ]);
+    }
 }
