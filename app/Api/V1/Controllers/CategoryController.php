@@ -61,4 +61,19 @@ class CategoryController extends Controller
             'name' => $category->name
         ]);
     }
+
+    public function delete(Category $category)
+    {
+        if ($category->products->count() > 0) {
+            return response()->json([
+                'message' => 'Category is still being used by products'
+            ], 403);
+        }
+
+        $category->delete();
+
+        return response()->json([
+            'message' => 'Category successfully deleted'
+        ]);
+    }
 }
