@@ -2,9 +2,10 @@
 
 namespace App\Api\V1\Controllers;
 
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Api\V1\Requests\StoreCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -31,6 +32,18 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
+        return response()->json([
+            'id' => $category->id,
+            'name' => $category->name
+        ]);
+    }
+
+    public function store(StoreCategoryRequest $request)
+    {
+        $category = Category::create([
+            'name' => $request->name
+        ]);
+
         return response()->json([
             'id' => $category->id,
             'name' => $category->name

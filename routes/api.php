@@ -19,6 +19,7 @@ use App\Api\V1\Controllers\CategoryController;
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
+Route::post('/categories', [CategoryController::class, 'store']);
 
 Route::get('/orders', [OrderController::class, 'index']);
 Route::get('/orders/{order}', [OrderController::class, 'show']);

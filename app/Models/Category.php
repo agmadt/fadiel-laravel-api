@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\NotFoundApiException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
