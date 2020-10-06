@@ -4,7 +4,7 @@ namespace App\Api\V1\Requests;
 
 use App\Api\V1\Requests\BaseApiRequest;
 
-class StoreProductRequest extends BaseApiRequest
+class UpdateProductRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class StoreProductRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'price' => 'required',
+            'name' => 'sometimes|required',
+            'price' => 'sometimes|required',
             'images' => 'array|min:1',
             'images.*.image' => 'required',
             'variants' => 'array|min:1',

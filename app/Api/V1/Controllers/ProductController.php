@@ -3,13 +3,23 @@
 namespace App\Api\V1\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Api\V1\Requests\StoreProductRequest;
+use App\Api\V1\Requests\UpdateProductRequest;
+use App\Repositories\ProductVariantsRepository;
 
 class ProductController extends Controller
 {
+    private $productVariantsRepository;
+
+    public function __construct(ProductVariantsRepository $productVariantsRepository)
+    {
+        $this->productVariantsRepository = $productVariantsRepository;
+    }
+
     public function index()
     {
         $perPage = request('limit') ? request('limit') : 10;
@@ -81,11 +91,7 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
 
-        $product = Product::create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-        ]);
+        $product = Product::create($request->all());
 
         if ($request->images) {
             foreach ($request->images as $itemImage) {
@@ -110,6 +116,59 @@ class ProductController extends Controller
         }
 
         if ($request->categories) {
+            foreach ($request->categories as $itemCategory) {
+                $variant = $product->categories()->create([
+                    'category_id' => $itemCategory['id']
+                ]);
+            }
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => $product->price,
+            'description' => $product->description,
+        ]);
+    }
+
+    public function update(UpdateProductRequest $request, Product $product)
+    {
+        DB::beginTransaction();
+
+        if ($request->images) {
+
+            $product->images()->delete();
+
+            foreach ($request->images as $itemImage) {
+                $product->images()->create([
+                    'image' => $itemImage['image']
+                ]);
+            }
+        }
+
+        if ($request->variants) {
+
+            $this->productVariantsRepository->deleteAllVariantsFromProduct($product);
+
+            foreach ($request->variants as $itemVariant) {
+                $variant = $product->variants()->create([
+                    'name' => $itemVariant['name']
+                ]);
+
+                foreach ($itemVariant['options'] as $itemVariantOption) {
+                    $variant->options()->create([
+                        'name' => $itemVariantOption['name']
+                    ]);
+                }
+            }
+        }
+
+        if ($request->categories) {
+
+            $product->categories()->delete();
+
             foreach ($request->categories as $itemCategory) {
                 $variant = $product->categories()->create([
                     'category_id' => $itemCategory['id']

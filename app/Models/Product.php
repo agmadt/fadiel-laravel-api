@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use App\Exceptions\NotFoundApiException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,6 +21,17 @@ class Product extends Model
         self::creating(function ($model) {
             $model->id = Str::uuid();
         });
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $product = $this->where('id', $value)->first();
+
+        if (!$product) {
+            throw new NotFoundApiException('Product not found');
+        }
+
+        return $product;
     }
 
     /** Relationships **/
