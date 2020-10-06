@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Api\V1\Controllers\OrderController;
 use App\Api\V1\Controllers\ProductController;
+use App\Api\V1\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,8 @@ use App\Api\V1\Controllers\ProductController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::get('/orders', [OrderController::class, 'index']);
 Route::get('/orders/{order}', [OrderController::class, 'show']);
