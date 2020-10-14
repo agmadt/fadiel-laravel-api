@@ -49,7 +49,7 @@ class OrderController extends Controller
             'id' => $order->id,
             'buyer_name' => $order->buyer_name,
             'buyer_email' => $order->buyer_email,
-            'total' => $order->total,
+            'total' => (float) $order->total,
             'message' => $order->message,
             'created_at' => $order->created_at->timestamp,
             'products' => $products
@@ -151,7 +151,7 @@ class OrderController extends Controller
             'id' => $order->id,
             'buyer_name' => $order->buyer_name,
             'buyer_email' => $order->buyer_email,
-            'total' => $order->total,
+            'total' => (float) $order->total,
             'message' => $order->message,
             'created_at' => $order->created_at->timestamp,
         ]);
