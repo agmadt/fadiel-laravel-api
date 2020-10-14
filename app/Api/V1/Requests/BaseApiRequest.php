@@ -14,6 +14,7 @@ class BaseApiRequest extends FormRequest
         $errors = $validator->errors();
 
         throw new HttpResponseException(response()->json([
+            'message' => "The given data was invalid",
             'errors' => $errors
         ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
