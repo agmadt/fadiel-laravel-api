@@ -135,7 +135,7 @@ class OrderController extends Controller
         $order = Order::create([
             'buyer_name' => $request->buyer_name,
             'buyer_email' => $request->buyer_email,
-            'message' => $request->buyer_message,
+            'message' => $request->message,
             'total' => $total
         ]);
 
@@ -151,6 +151,7 @@ class OrderController extends Controller
             'id' => $order->id,
             'buyer_name' => $order->buyer_name,
             'buyer_email' => $order->buyer_email,
+            'total' => $order->total,
             'message' => $order->message,
             'created_at' => $order->created_at->timestamp,
         ]);
