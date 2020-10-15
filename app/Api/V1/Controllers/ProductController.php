@@ -27,17 +27,63 @@ class ProductController extends Controller
         $productsArr = [];
 
         foreach ($products->items() as $product) {
+
+            $imagesArr = [];
+            $variantsArr = [];
+            $categoriesArr = [];
+
+            if ($product->images) {
+                foreach ($product->images as $productImage) {
+                    $imagesArr[] = [
+                        'id' => $productImage->id,
+                        'image' => $productImage->image
+                    ];
+                }
+            }
+
+            if ($product->variants) {
+                foreach ($product->variants as $productVariant) {
+                    $variantOptions = [];
+
+                    if ($productVariant->options) {
+                        foreach ($productVariant->options as $productOption) {
+                            $variantOptions[] = [
+                                'id' => $productOption->id,
+                                'name' => $productOption->name
+                            ];
+                        }
+                    }
+
+                    $variantsArr[] = [
+                        'id' => $productVariant->id,
+                        'name' => $productVariant->name,
+                        'options' => $variantOptions
+                    ];
+                }
+            }
+
+            if ($product->categories) {
+                foreach ($product->categories as $productCategory) {
+                    $categoriesArr[] = [
+                        'id' => $productCategory->category_id,
+                        'name' => $productCategory->category->name,
+                    ];
+                }
+            }
+
             $productsArr[] = [
                 'id' => $product->id,
                 'name' => $product->name,
                 'price' => $product->price,
                 'description' => $product->description,
-                'created_at' => $product->created_at->timestamp,
+                'images' => $imagesArr,
+                'variants' => $variantsArr,
+                'categories' => $categoriesArr,
             ];
         }
 
         return response()->json([
-            'orders' => $productsArr,
+            'products' => $productsArr,
             'limit' => (int) $perPage,
             'page' => $products->currentPage(),
             'total' => $products->total()
@@ -48,10 +94,12 @@ class ProductController extends Controller
     {
         $imagesArr = [];
         $variantsArr = [];
+        $categoriesArr = [];
 
         if ($product->images) {
             foreach ($product->images as $productImage) {
                 $imagesArr[] = [
+                    'id' => $productImage->id,
                     'image' => $productImage->image
                 ];
             }
@@ -78,12 +126,22 @@ class ProductController extends Controller
             }
         }
 
+        if ($product->categories) {
+            foreach ($product->categories as $productCategory) {
+                $categoriesArr[] = [
+                    'id' => $productCategory->category_id,
+                    'name' => $productCategory->category->name,
+                ];
+            }
+        }
+
         return response()->json([
             'id' => $product->id,
             'name' => $product->name,
             'price' => $product->price,
             'images' => $imagesArr,
-            'variants' => $variantsArr
+            'variants' => $variantsArr,
+            'categories' => $categoriesArr
         ]);
     }
 
@@ -181,7 +239,7 @@ class ProductController extends Controller
         return response()->json([
             'id' => $product->id,
             'name' => $product->name,
-            'price' => $product->price,
+            'price' => (float) $product->price,
             'description' => $product->description,
         ]);
     }

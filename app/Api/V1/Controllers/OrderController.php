@@ -22,7 +22,7 @@ class OrderController extends Controller
                 'id' => $item->id,
                 'buyer_name' => $item->buyer_name,
                 'buyer_email' => $item->buyer_email,
-                'total' => $item->total,
+                'total' => (float) $item->total,
                 'message' => $item->message,
                 'created_at' => $item->created_at->timestamp,
             ];
