@@ -154,7 +154,7 @@ class ProductController extends Controller
                 if (!$category) {
                     return response()->json([
                         'message' => 'Category not found'
-                    ]);
+                    ])->setStatusCode(404);
                 }
             }
         }
@@ -211,11 +211,11 @@ class ProductController extends Controller
                 if (!$category) {
                     return response()->json([
                         'message' => 'Category not found'
-                    ]);
+                    ])->setStatusCode(404);
                 }
             }
         }
-        
+
         DB::beginTransaction();
 
         if ($request->images) {
