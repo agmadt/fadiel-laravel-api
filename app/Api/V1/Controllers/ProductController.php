@@ -3,6 +3,7 @@
 namespace App\Api\V1\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\ProductImage;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
@@ -147,6 +148,17 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
+        if ($request->categories) {
+            foreach ($request->categories as $itemCategory) {
+                $category = Category::where(['id' => $itemCategory['id']])->first();
+                if (!$category) {
+                    return response()->json([
+                        'message' => 'Category not found'
+                    ]);
+                }
+            }
+        }
+
         DB::beginTransaction();
 
         $product = Product::create($request->all());
@@ -193,6 +205,17 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product)
     {
+        if ($request->categories) {
+            foreach ($request->categories as $itemCategory) {
+                $category = Category::where(['id' => $itemCategory['id']])->first();
+                if (!$category) {
+                    return response()->json([
+                        'message' => 'Category not found'
+                    ]);
+                }
+            }
+        }
+        
         DB::beginTransaction();
 
         if ($request->images) {
