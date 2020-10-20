@@ -218,6 +218,8 @@ class ProductController extends Controller
 
         DB::beginTransaction();
 
+        $product->update($request->all());
+
         if ($request->images) {
 
             $product->images()->delete();
