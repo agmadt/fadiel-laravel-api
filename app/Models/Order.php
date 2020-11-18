@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -14,7 +15,7 @@ class Order extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         self::creating(function ($model) {
@@ -22,13 +23,13 @@ class Order extends Model
         });
     }
 
-    public function setUpdatedAtAttribute($value)
+    public function setUpdatedAtAttribute($value): void
     {
         // to Disable updated_at
     }
 
     /** Relationships **/
-    public function products()
+    public function products(): HasMany
     {
         return $this->hasMany(OrderProduct::class);
     }

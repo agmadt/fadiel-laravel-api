@@ -15,7 +15,7 @@ class ProductImage extends Model
     protected $fillable = ['image'];
     public $timestamps = false;
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         self::creating(function ($model) {

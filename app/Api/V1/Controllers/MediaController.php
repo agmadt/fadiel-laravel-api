@@ -2,15 +2,16 @@
 
 namespace App\Api\V1\Controllers;
 
+use App\Models\Media;
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Api\V1\Requests\StoreMediaRequest;
-use App\Models\Media;
 
 class MediaController extends Controller
 {
-    public function store(StoreMediaRequest $request)
+    public function store(StoreMediaRequest $request): JsonResponse
     {
         $file = $request->file('media');
         $fullName = Str::uuid() . '.' . $file->extension();

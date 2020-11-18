@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use App\Exceptions\NotFoundApiException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -23,7 +24,7 @@ class Product extends Model
         });
     }
 
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, $field = null): Product
     {
         $product = $this->where('id', $value)->first();
 
@@ -35,17 +36,17 @@ class Product extends Model
     }
 
     /** Relationships **/
-    public function images()
+    public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class);
     }
 
-    public function variants()
+    public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class);
     }
 
-    public function categories()
+    public function categories(): HasMany
     {
         return $this->hasMany(ProductCategory::class);
     }

@@ -14,7 +14,7 @@ class Media extends Model
     protected $keyType = 'string';
     protected $fillable = ['filename', 'location', 'type'];
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         self::creating(function ($model) {

@@ -15,7 +15,7 @@ class OrderProduct extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         self::creating(function ($model) {
@@ -24,7 +24,7 @@ class OrderProduct extends Model
     }
 
     /** Accessor **/
-    public function getProductJSONAttribute()
+    public function getProductJSONAttribute(): string
     {
         return json_decode($this->product);
     }

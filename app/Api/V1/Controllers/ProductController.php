@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Api\V1\Requests\StoreProductRequest;
 use App\Api\V1\Requests\UpdateProductRequest;
 use App\Repositories\ProductVariantsRepository;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -21,7 +22,7 @@ class ProductController extends Controller
         $this->productVariantsRepository = $productVariantsRepository;
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = request('limit') ? request('limit') : 10;
         $products = Product::orderBy('created_at', 'DESC')->paginate($perPage);
@@ -91,7 +92,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show(Product $product)
+    public function show(Product $product): JsonResponse
     {
         $imagesArr = [];
         $variantsArr = [];
@@ -146,7 +147,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(StoreProductRequest $request)
+    public function store(StoreProductRequest $request): JsonResponse
     {
         if ($request->categories) {
             foreach ($request->categories as $itemCategory) {
@@ -203,7 +204,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
         if ($request->categories) {
             foreach ($request->categories as $itemCategory) {
@@ -269,7 +270,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function delete(Product $product)
+    public function delete(Product $product): JsonResponse
     {
         DB::beginTransaction();
 

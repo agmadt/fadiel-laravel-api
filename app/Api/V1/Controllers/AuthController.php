@@ -2,12 +2,13 @@
 
 namespace App\Api\V1\Controllers;
 
-use App\Api\V1\Requests\LoginRequest;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Api\V1\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->only(['email', 'password']);
 

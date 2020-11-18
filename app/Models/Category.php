@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\NotFoundApiException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -15,7 +16,7 @@ class Category extends Model
     protected $keyType = 'string';
     protected $fillable = ['name'];
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         self::creating(function ($model) {
@@ -23,19 +24,19 @@ class Category extends Model
         });
     }
 
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, $field = null): Category
     {
-        $product = $this->where('id', $value)->first();
+        $category = $this->where('id', $value)->first();
 
-        if (!$product) {
+        if (!$category) {
             throw new NotFoundApiException('Category not found');
         }
 
-        return $product;
+        return $category;
     }
 
     /** Relationships **/
-    public function products()
+    public function products(): HasMany
     {
         return $this->hasMany(ProductCategory::class);
     }

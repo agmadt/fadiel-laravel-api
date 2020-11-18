@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductVariantsRepository
 {
-    public function deleteAllVariantsFromProduct(Product $product)
+    public function deleteAllVariantsFromProduct(Product $product): bool
     {
         DB::beginTransaction();
 

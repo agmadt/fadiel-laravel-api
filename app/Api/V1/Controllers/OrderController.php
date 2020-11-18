@@ -4,6 +4,7 @@ namespace App\Api\V1\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\ProductVariantOption;
@@ -11,7 +12,7 @@ use App\Api\V1\Requests\StoreOrderRequest;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = request('limit') ? request('limit') : 10;
         $orders = Order::orderBy('created_at', 'DESC')->paginate($perPage);
@@ -36,7 +37,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function show(Order $order)
+    public function show(Order $order): JsonResponse
     {
         $products = [];
 
@@ -56,7 +57,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request): JsonResponse
     {
         $total = 0;
         $productsArr = [];

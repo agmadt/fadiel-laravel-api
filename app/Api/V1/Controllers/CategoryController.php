@@ -6,10 +6,11 @@ use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Api\V1\Requests\StoreCategoryRequest;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $perPage = request('limit') ? request('limit') : 10;
         $categories = Category::orderBy('created_at', 'DESC')->paginate($perPage);
@@ -30,7 +31,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function show(Category $category)
+    public function show(Category $category): JsonResponse
     {
         return response()->json([
             'id' => $category->id,
@@ -38,7 +39,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request): JsonResponse
     {
         $category = Category::create([
             'name' => $request->name
@@ -50,7 +51,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function update(StoreCategoryRequest $request, Category $category)
+    public function update(StoreCategoryRequest $request, Category $category): JsonResponse
     {
         $category->update([
             'name' => $request->name
@@ -62,7 +63,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function delete(Category $category)
+    public function delete(Category $category): JsonResponse
     {
         if ($category->products->count() > 0) {
             return response()->json([

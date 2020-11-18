@@ -11,7 +11,7 @@ class UpdateProductRequest extends BaseApiRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +21,7 @@ class UpdateProductRequest extends BaseApiRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'sometimes|required',

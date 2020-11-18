@@ -15,7 +15,7 @@ class ProductVariant extends Model
     protected $fillable = ['name'];
     public $timestamps = false;
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         self::creating(function ($model) {
@@ -24,7 +24,7 @@ class ProductVariant extends Model
     }
 
     /** Relationships **/
-    public function options()
+    public function options(): hasMany
     {
         return $this->hasMany(ProductVariantOption::class);
     }
