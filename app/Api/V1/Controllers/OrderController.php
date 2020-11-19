@@ -105,13 +105,8 @@ class OrderController extends Controller
 
             if ($product->categories) {
                 foreach ($product->categories as $category) {
-
-                    if (empty($category->category)) {
-                        continue;
-                    }
-
                     $categoriesArr[] = [
-                        'name' => $category->category->name
+                        'name' => $category->name
                     ];
                 }
             }

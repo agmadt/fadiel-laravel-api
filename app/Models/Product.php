@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
-use App\Exceptions\NotFoundApiException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Exceptions\NotFoundApiException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -46,8 +47,8 @@ class Product extends Model
         return $this->hasMany(ProductVariant::class);
     }
 
-    public function categories(): HasMany
+    public function categories(): BelongsToMany
     {
-        return $this->hasMany(ProductCategory::class);
+        return $this->belongsToMany(Category::class, 'product_categories');
     }
 }

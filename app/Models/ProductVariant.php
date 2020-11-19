@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductVariant extends Model
@@ -24,7 +25,7 @@ class ProductVariant extends Model
     }
 
     /** Relationships **/
-    public function options(): hasMany
+    public function options(): HasMany
     {
         return $this->hasMany(ProductVariantOption::class);
     }

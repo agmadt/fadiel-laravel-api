@@ -4,7 +4,6 @@ namespace App\Api\V1\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\ProductImage;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -25,8 +24,16 @@ class ProductController extends Controller
     public function index(): JsonResponse
     {
         $perPage = request('limit') ? request('limit') : 10;
-        $products = Product::orderBy('created_at', 'DESC')->paginate($perPage);
         $productsArr = [];
+        $filter = request('filter');
+
+        $products = Product::with(['images', 'categories', 'variants.options'])
+            ->when(isset($filter['category']), function ($query) use ($filter) {
+                return $query->whereHas('categories', function ($query) use ($filter) {
+                    return $query->where('categories.name', 'LIKE', '%' . $filter['category'] . '%');
+                });
+            })
+            ->orderBy('created_at', 'DESC')->paginate($perPage);
 
         foreach ($products->items() as $product) {
 
@@ -65,10 +72,10 @@ class ProductController extends Controller
             }
 
             if ($product->categories) {
-                foreach ($product->categories as $productCategory) {
+                foreach ($product->categories as $category) {
                     $categoriesArr[] = [
-                        'id' => $productCategory->category_id,
-                        'name' => $productCategory->category->name,
+                        'id' => $category->id,
+                        'name' => $category->name,
                     ];
                 }
             }
@@ -129,10 +136,10 @@ class ProductController extends Controller
         }
 
         if ($product->categories) {
-            foreach ($product->categories as $productCategory) {
+            foreach ($product->categories as $category) {
                 $categoriesArr[] = [
-                    'id' => $productCategory->category_id,
-                    'name' => $productCategory->category->name,
+                    'id' => $category->id,
+                    'name' => $category->name,
                 ];
             }
         }
@@ -188,7 +195,8 @@ class ProductController extends Controller
 
         if ($request->categories) {
             foreach ($request->categories as $itemCategory) {
-                $variant = $product->categories()->create([
+                ProductCategory::create([
+                    'product_id' => $product->id,
                     'category_id' => $itemCategory['id']
                 ]);
             }
@@ -254,7 +262,8 @@ class ProductController extends Controller
             $product->categories()->delete();
 
             foreach ($request->categories as $itemCategory) {
-                $variant = $product->categories()->create([
+                ProductCategory::create([
+                    'product_id' => $product->id,
                     'category_id' => $itemCategory['id']
                 ]);
             }
