@@ -21,6 +21,7 @@ use App\Api\V1\Controllers\CategoryController;
 
 Route::middleware('cache.headers:public;max_age=3600;etag')->group(function () {
     Route::post('/auth/login', [AuthController::class, 'login']);
+    Route::get('/auth/me', [AuthController::class, 'me'])->middleware('api.auth');
 
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::post('/categories', [CategoryController::class, 'store'])->middleware('api.auth');
