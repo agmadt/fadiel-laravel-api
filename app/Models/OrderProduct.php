@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use stdClass;
 
 class OrderProduct extends Model
 {
@@ -24,7 +25,7 @@ class OrderProduct extends Model
     }
 
     /** Accessor **/
-    public function getProductJSONAttribute(): string
+    public function getProductJSONAttribute(): stdClass
     {
         return json_decode($this->product);
     }

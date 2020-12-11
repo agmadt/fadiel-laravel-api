@@ -25,7 +25,7 @@ class StoreProductRequest extends BaseApiRequest
     {
         return [
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
             'images' => 'array|min:1',
             'images.*.image' => 'required',
             'variants' => 'array|min:1',

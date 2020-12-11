@@ -148,6 +148,7 @@ class ProductController extends Controller
             'id' => $product->id,
             'name' => $product->name,
             'price' => $product->price,
+            'description' => $product->description,
             'images' => $imagesArr,
             'variants' => $variantsArr,
             'categories' => $categoriesArr
@@ -259,7 +260,13 @@ class ProductController extends Controller
 
         if ($request->categories) {
 
-            $product->categories()->delete();
+            $productCategories = ProductCategory::where([
+                'product_id' => $product->id,
+            ])->get();
+
+            foreach ($productCategories as $productCategory) {
+                $productCategory->delete();
+            }
 
             foreach ($request->categories as $itemCategory) {
                 ProductCategory::create([
